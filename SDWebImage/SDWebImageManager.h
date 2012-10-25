@@ -114,6 +114,18 @@ typedef NSString *(^CacheKeyFilter)(NSURL *url);
  */
 - (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate options:(SDWebImageOptions)options userInfo:(NSDictionary *)info;
 
+/**
+ * Downloads the image at the given URL if not present in cache or return the cached version otherwise.
+ *
+ * @param url The URL to the image
+ * @param delegate The delegate object used to send result back
+ * @param options A mask to specify options to use for this request
+ * @param info An NSDictionnary passed back to delegate if provided
+ * @param timeout The timeout the request has to complete
+ * @see [SDWebImageManager downloadWithURL:delegate:options:success:failure:]
+ */
+- (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate options:(SDWebImageOptions)options userInfo:(NSDictionary *)userInfo timeout:(NSTimeInterval)timeout;
+
 // use options:SDWebImageRetryFailed instead
 - (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate retryFailed:(BOOL)retryFailed __attribute__ ((deprecated));
 // use options:SDWebImageRetryFailed|SDWebImageLowPriority instead

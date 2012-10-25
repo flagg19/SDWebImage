@@ -112,6 +112,11 @@ static SDWebImageManager *instance;
 
 - (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate options:(SDWebImageOptions)options userInfo:(NSDictionary *)userInfo
 {
+    [self downloadWithURL:url delegate:delegate options:options userInfo:userInfo timeout:15.0];
+}
+
+- (void)downloadWithURL:(NSURL *)url delegate:(id<SDWebImageManagerDelegate>)delegate options:(SDWebImageOptions)options userInfo:(NSDictionary *)userInfo timeout:(NSTimeInterval)timeout
+{
     // Very common mistake is to send the URL using NSString object instead of NSURL. For some strange reason, XCode won't
     // throw any warning for this type mismatch. Here we failsafe this error by allowing URLs to be passed as NSString.
     if ([url isKindOfClass:NSString.class])
@@ -134,6 +139,7 @@ static SDWebImageManager *instance;
     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:
                           delegate, @"delegate",
                           url, @"url",
+                          [NSNumber numberWithDouble:timeout], @"timeout",
                           [NSNumber numberWithInt:options], @"options",
                           userInfo ? userInfo : [NSNull null], @"userInfo",
                           nil];
@@ -269,6 +275,7 @@ static SDWebImageManager *instance;
 - (void)imageCache:(SDImageCache *)imageCache didNotFindImageForKey:(NSString *)key userInfo:(NSDictionary *)info
 {
     NSURL *url = [info objectForKey:@"url"];
+    NSTimeInterval timeout = [[info objectForKey:@"timeout"] doubleValue];
     id<SDWebImageManagerDelegate> delegate = [info objectForKey:@"delegate"];
     SDWebImageOptions options = [[info objectForKey:@"options"] intValue];
 
@@ -287,7 +294,7 @@ static SDWebImageManager *instance;
 
     if (!downloader)
     {
-        downloader = [SDWebImageDownloader downloaderWithURL:url delegate:self userInfo:info lowPriority:(options & SDWebImageLowPriority)];
+        downloader = [SDWebImageDownloader downloaderWithURL:url delegate:self userInfo:info lowPriority:(options & SDWebImageLowPriority) timeout:timeout];
         [downloaderForURL setObject:downloader forKey:url];
     }
     else

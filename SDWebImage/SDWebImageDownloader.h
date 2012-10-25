@@ -20,6 +20,7 @@ extern NSString *const SDWebImageDownloadStopNotification;
 {
     @private
     NSURL *url;
+    NSTimeInterval timeout;
     SDWIWeak id<SDWebImageDownloaderDelegate> delegate;
     NSURLConnection *connection;
     NSMutableData *imageData;
@@ -31,6 +32,7 @@ extern NSString *const SDWebImageDownloadStopNotification;
 }
 
 @property (nonatomic, retain) NSURL *url;
+@property (nonatomic, assign) NSTimeInterval timeout;
 @property (nonatomic, assign) id<SDWebImageDownloaderDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *imageData;
 @property (nonatomic, retain) id userInfo;
@@ -61,6 +63,7 @@ extern NSString *const SDWebImageDownloadStopNotification;
  *
  * @return A new SDWebImageDownloader instance
  */
++ (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo lowPriority:(BOOL)lowPriority timeout:(NSTimeInterval)timeout;
 + (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo lowPriority:(BOOL)lowPriority;
 + (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo;
 + (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate;

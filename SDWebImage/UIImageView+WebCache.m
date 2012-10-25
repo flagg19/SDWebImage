@@ -22,8 +22,13 @@
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options
 {
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [self setImageWithURL:url placeholderImage:placeholder options:options timeout:15];
+}
 
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options timeout:(NSTimeInterval)timeout
+{
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
 
@@ -31,7 +36,7 @@
 
     if (url)
     {
-        [manager downloadWithURL:url delegate:self options:options];
+        [manager downloadWithURL:url delegate:self options:options userInfo:nil timeout:timeout];
     }
 }
 
